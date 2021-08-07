@@ -65,6 +65,25 @@ insert x (Node left y right)
   | x > y = Node left y (insert x right)
   | otherwise = Node left y right
 
+-- Function that uses depth-first search to find a node that satisfies a given predicate
+dfs :: Eq a => (a -> Bool) -> Tree a -> Maybe a
+dfs _ Leaf = Nothing
+dfs p (Node left y right)
+  | p y = Just y
+  | leftSub == Nothing = rightSub
+  | otherwise = leftSub
+  where
+    leftSub = dfs p left
+    rightSub = dfs p right
+
+-- Returns a list of visited nodes while traversing the tree in a depth-first manner
+dfTraverse :: Tree a -> [a]
+dfTraverse Leaf = []
+dfTraverse (Node left y right) = y : leftSub ++ rightSub
+  where
+    leftSub = dfTraverse left
+    rightSub = dfTraverse right
+
 -- Sample tree
 test :: Tree Int
 test = Node (Node (Node Leaf 3 Leaf) 4 (Node Leaf 5 Leaf)) 6 (Node Leaf 7 Leaf)

@@ -84,6 +84,11 @@ dfTraverse (Node left y right) = y : leftSub ++ rightSub
     leftSub = dfTraverse left
     rightSub = dfTraverse right
 
+-- Converts a tree of "a" into a list of "a"
+flatten :: Tree a -> [a]
+flatten Leaf = []
+flatten (Node left y right) = flatten left ++ [y] ++ flatten right
+
 -- Sample tree
 test :: Tree Int
 test = Node (Node (Node Leaf 3 Leaf) 4 (Node Leaf 5 Leaf)) 6 (Node Leaf 7 Leaf)

@@ -50,7 +50,7 @@ containsBST x (Node left y right)
 -- Returns the size of a given tree
 size :: Tree a -> Int
 size Leaf = 0
-size (Node left y right) = 1 + size left + size right
+size (Node left _ right) = 1 + size left + size right
 
 -- Return the depth of a given tree
 depth :: Tree a -> Int

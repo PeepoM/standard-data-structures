@@ -89,6 +89,26 @@ flatten :: Tree a -> [a]
 flatten Leaf = []
 flatten (Node left y right) = flatten left ++ [y] ++ flatten right
 
+-- Function for folding lists to avoid repetitions
+treeFold :: b -> (b -> a -> b -> b) -> Tree a -> b
+treeFold base f Leaf = base
+treeFold base f (Node left y right) = f (treeFold base f left) y (treeFold base f right)
+
+-- Reiterating certain defined function once again, but this time in terms of treeFold
+treeSize' :: Tree a -> Int
+treeSize' = treeFold 0 (\left _ right -> 1 + left + right)
+
+treeSum' :: Tree Int -> Int
+treeSum' = treeFold 0 (\left y right -> left + y + right)
+
+treeDepth' :: Tree a -> Int
+treeDepth' = treeFold 0 (\left _ right -> 1 + max left right)
+
+treeMax :: (Ord a, Bounded a) => Tree a -> a
+treeMax = treeFold minBound (\left y right -> left `max` y `max` right)
+
+-----------
+
 -- Sample tree
 test :: Tree Int
 test = Node (Node (Node Leaf 3 Leaf) 4 (Node Leaf 5 Leaf)) 6 (Node Leaf 7 Leaf)
